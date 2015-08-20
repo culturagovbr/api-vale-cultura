@@ -13,7 +13,7 @@ from models import *
 app = Flask(__name__)
 api = Api(app)
 
-engine = create_engine('mssql+pymssql://api_vale_cultura:senha@minc10/dbminc', encoding='cp1252')
+engine = create_engine('mssql+pymssql://user:senha@minc10/dbminc', encoding='cp1252')
 meta = MetaData()
 meta.reflect(bind=engine)
 beneficiarias = Table('S_BENEFICIARIA', meta, autoload=True, autoload_with=engine)
