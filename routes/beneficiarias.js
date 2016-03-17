@@ -3,7 +3,7 @@ var paginate = require('express-paginate');
 var hal = require('hal');
 var _ = require('lodash');
 
-var DAOBeneficiarias = require('../models/beneficiarias-mockup');
+var DAOBeneficiarias = require('../models/beneficiarias');
 
 var router = express.Router();
 var app = express();
@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
       }
 
       var embeds = _.map(beneficiarias, function(e){
-        return new hal.Resource(e, "/vale-cultura/doc/beneficiaria/" + e.NR_CNPJ);
+        return new hal.Resource(e, "/vale-cultura/doc/beneficiaria/" + e.CNPJ_BENEFICIARIA);
       });
 
       var beneficiariasCollection = new hal.Resource({

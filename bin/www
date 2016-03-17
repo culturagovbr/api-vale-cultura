@@ -7,27 +7,14 @@
 var app = require('../app');
 var debug = require('debug')('api-valecultura:server');
 var http = require('http');
-
+var sql = require('mssql');
+var config = require('config');
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -48,6 +35,29 @@ function normalizePort(val) {
 
   return false;
 }
+
+/**
+ * Connecting to DB.
+ */
+sql.connect("mssql://"+
+            config.get('dbConfig.user') + ":" +
+            config.get('dbConfig.pass') + "@" +
+            config.get ('dbConfig.host') + "/" +
+            config.get('dbConfig.dbName')).then(function() {
+
+  /**
+   * Create HTTP server.
+   */
+  var server = http.createServer(app);
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+
+
 
 /**
  * Event listener for HTTP server "error" event.
@@ -88,3 +98,8 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+}).catch(function(err) {
+	// ... connect error checks
+  console.log(err);
+});

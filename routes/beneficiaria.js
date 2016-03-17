@@ -13,17 +13,18 @@ router.use(function(req, res, next) {
 
 /* GET home page. */
 router.get('/:cnpj', function(req, res, next) {
-  var DAOBeneficiarias = require('../models/beneficiarias-mockup');
+  var DAOBeneficiarias = require('../models/beneficiarias');
 
-  var beneficiaria = DAOBeneficiarias.findByCNPJ(req.params.cnpj);
+  DAOBeneficiarias.findByCNPJ(req.params.cnpj, function(beneficiaria){
 
-  if (_.isUndefined(beneficiaria)) {
-    res.send("CNPJ inválido ou inexistente na base. Recurso não encontrado.", 404);
-  } else {
+    if (_.isUndefined(beneficiaria)) {
+      res.send("CNPJ inválido ou inexistente na base. Recurso não encontrado.", 404);
+    } else {
 
-    var links = {self: "/vale-cultura/doc/beneficiaria/" + beneficiaria.NR_CNPJ};
-    res.hal({data: beneficiaria, links: links});
-  }
+      var links = {self: "/vale-cultura/doc/beneficiaria/" + beneficiaria.CNPJ_BENEFICIARIA};
+      res.hal({data: beneficiaria, links: links});
+    }
+  });
 });
 
 module.exports = router;

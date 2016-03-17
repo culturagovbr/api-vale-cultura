@@ -1,0 +1,9 @@
+{
+  //Config BD
+  "dbConfig": {
+    "user": "user",
+    "pass": "pass",
+    "host": "host",
+    "dbName": "dbName"
+  }
+}
